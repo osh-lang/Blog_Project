@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.project.Blog.mapper.SocialMapper">
+
+	<select id="userMap" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT  u.user_id
+			  , u.user_nm
+			  , u.user_mail
+			  , u.admin_at
+		  FROM tb_user u left join tb_user_social_info s ON (u.user_id = s.user_id)
+		 WHERE s.sns_id = #{id, jdbcType=VARCHAR}
+		   AND s.use_yn  = 'Y'
+	</select>
+
+	<select id="LoginCheck" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<![CDATA[
+		SELECT  CASE COUNT(*) > 0
+					WHEN use_yn = 'Y' THEN 'Y'
+					ELSE 'N'
+				END login_at
+		  FROM 	tb_user
+		 WHERE 	user_id = #{id, jdbcType=VARCHAR}
+	]]>
+	</select>
+
+	<select id="SocialCheck" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<![CDATA[
+		SELECT  CASE COUNT(*) > 0
+					WHEN use_yn = 'Y' THEN 'Y'
+					ELSE 'N'
+				END login_at
+		  FROM 	tb_user_social_info
+		 WHERE 	sns_id = #{id, jdbcType=VARCHAR}
+	]]>
+	</select>
+
+	<insert id="RegisterInfo" parameterType="java.util.HashMap">
+	<![CDATA[
+		INSERT
+		  INTO  tb_user_social_info
+			(
+				  user_id
+				, join_type
+				, sns_id
+				, frst_regist_dt
+			)
+		VALUES
+			(
+				  #{user_id, jdbcType=VARCHAR}
+			    , #{join_type, jdbcType=VARCHAR}
+			    , #{sns_id, jdbcType=VARCHAR}
+			    , now()
+			)
+	]]>
+	</insert>
+
+	<insert id="Register" parameterType="java.util.HashMap">
+	<![CDATA[
+		INSERT
+		  INTO  tb_user
+			(
+				  user_id
+			    , user_pw
+			    , user_mail
+			    , user_nm
+			    , tel
+			    , frst_regist_dt
+			)
+		VALUES
+			(
+				  #{user_id, jdbcType=VARCHAR}
+			    , #{user_pw, jdbcType=VARCHAR}
+			    , #{user_mail, jdbcType=VARCHAR}
+			    , #{user_nm, jdbcType=VARCHAR}
+			    , #{user_tel, jdbcType=VARCHAR}
+			    , now()
+			)
+	]]>
+	</insert>
+</mapper>

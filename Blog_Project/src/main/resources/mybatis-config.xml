@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+    	 <!-- 조회값이 NULL일 경우 컬럼을 가져오지않는데 ture 설정 함으로 컬럼을 누락하지 않고 모두 조회 -->
+         <setting name="callSettersOnNulls" value="true"/>
+    </settings>
+</configuration>

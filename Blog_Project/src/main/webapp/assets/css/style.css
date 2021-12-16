@@ -1,0 +1,80 @@
+@charset "EUC-KR";
+
+#head{
+	margin-top: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	margin-bottom: 10px;
+	font-size: 50px;
+}
+
+#login_text{
+	margin-top: 15px;
+	margin-bottom: 7px;
+	font-size: 30px;
+}
+
+#login_id{
+    padding-right: 100px;
+    margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#login_password{
+    padding-right: 100px;
+    margin-top: 15px;
+	margin-bottom: 15px;
+	margin-bottom: 15px;
+}
+
+#login_btn{
+    width: 220px;
+    height: 50px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+    border-radius: 6px;
+}
+
+#naverlogin_btn{
+    width: 220px;
+    height: 50px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+#gitlogin_btn{
+    width: 220px;
+    height: 50px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+    border-radius: 6px;
+}
+
+#kakaologin_btn{
+    width: 220px;
+    height: 50px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+#googlelogin_btn{
+    width: 220px;
+    height: 50px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+#signin_btn{
+    width: 220px;
+    height: 50px;
+    margin-right: 0px;
+    border-radius: 6px;
+}
+
+#join_btn{
+    margin-top: 7px;
+    margin-bottom: 7px;
+    margin-right: 0px;
+    padding-right: 95px;
+    padding-left: 95px;
+}

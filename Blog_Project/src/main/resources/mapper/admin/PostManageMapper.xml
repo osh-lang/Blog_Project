@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.project.Blog.mapper.PostManageMapper">
+
+	<!-- 글 정보 조회 및 페이징 -->
+	<select id="selectPost" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	    SELECT  post_no
+	          , tag_no
+	          , post_sj
+   			  <![CDATA[
+			  , REGEXP_REPLACE(post_cn , '<[^>]*>|\&([^;])*;', '') as post_cn
+			  ]]>
+	          , file_no
+	          , read_cnt
+	          , date_format(frst_regist_dt, '%Y-%m-%d %H:%i') as frst_regist_dt
+	          , frst_register
+	          , date_format(last_updt_dt, '%Y-%m-%d %H:%i') as last_updt_dt
+	          , last_updusr
+	          , delete_at
+	          , date_format(delete_dt, '%Y-%m-%d %H:%i') as delete_dt
+	          , deleter
+	      FROM 	tb_post
+	     WHERE  delete_at = 'N'
+	<choose>
+		<when test="search_type != null and search_type.equals('frst_register')">
+	       AND  frst_register LIKE CONCAT('%', #{search_keyword}, '%')
+	    </when>
+		<when test="search_type != null and search_type.equals('post_sj')">
+	       AND 	post_sj LIKE CONCAT('%', #{search_keyword}, '%')
+		</when>
+		<when test="search_type != null and search_type.equals('post_cn')">
+	       AND 	post_cn LIKE CONCAT('%', #{search_keyword}, '%')
+		</when>
+	</choose>
+		 ORDER  BY frst_regist_dt DESC
+		 LIMIT  #{limit_start, jdbcType=VARCHAR}
+          	  , #{limit_end, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 글 수 조회 -->
+  	<select id="countPostList" resultType="Int">
+		SELECT  count(*)
+		  FROM  tb_post
+		 WHERE  delete_at = 'N'
+	<choose>
+		<when test="search_type != null and search_type.equals('frst_register')">
+	       AND  frst_register LIKE CONCAT('%', #{search_keyword}, '%')
+	    </when>
+		<when test="search_type != null and search_type.equals('post_sj')">
+	       AND 	post_sj LIKE CONCAT('%', #{search_keyword}, '%')
+		</when>
+		<when test="search_type != null and search_type.equals('post_cn')">
+	       AND 	post_cn LIKE CONCAT('%', #{search_keyword}, '%')
+		</when>
+	</choose>
+	</select>
+
+	<!-- 글 정보 수정 -->
+	<update id="updatePost" parameterType="java.util.HashMap">
+		UPDATE  tb_post
+		   SET	post_sj = #{post_sj, jdbcType=VARCHAR}
+		      , post_cn = #{post_cn, jdbcType=VARCHAR}
+		      , last_updt_dt = NOW()
+		      , last_updusr = #{last_updusr, jdbcType=VARCHAR}
+		 WHERE  post_no = #{post_no, jdbcType=VARCHAR}
+		   AND  delete_at = 'N'
+	</update>
+
+	<select id="viewPost" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT  post_no
+		      , tag_no
+		      , post_sj
+			  , post_cn
+		      , file_no
+		      , read_cnt
+		      , date_format(frst_regist_dt, '%Y-%m-%d %H:%i') as frst_regist_dt
+		      , frst_register
+		      , date_format(last_updt_dt, '%Y-%m-%d %H:%i') as last_updt_dt
+		      , last_updusr
+		      , delete_at
+		      , date_format(delete_dt, '%Y-%m-%d %H:%i') as delete_dt
+		      , deleter
+		  FROM 	tb_post
+		 WHERE  delete_at = 'N'
+		   AND  post_no = #{post_no, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 글 삭제 -->
+	<update id="deletePost" parameterType="java.util.HashMap">
+		UPDATE  tb_post
+		   SET	delete_at = 'Y'
+		      , delete_dt = NOW()
+		      , deleter = #{deleter, jdbcType=VARCHAR}
+		 WHERE  post_no = #{post_no, jdbcType=VARCHAR}
+	</update>
+
+	<!-- 파일 수정 -->
+	<update id="updateFile" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="file_no">
+		UPDATE  tb_file
+		   SET  last_updt_dt = NOW()
+			  , last_updusr = #{last_updusr, jdbcType=VARCHAR}
+		 WHERE  delete_at = 'N'
+		   AND  file_no = #{file_no, jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateFileDetail" parameterType="java.util.HashMap">
+		UPDATE  tb_file_detail
+		   SET  file_detail_sn = #{file_detail_sn, jdbcType=VARCHAR}
+		      , file_stre_nm = #{save_name, jdbcType=VARCHAR}
+			  , file_orginl_nm = #{original_name, jdbcType=VARCHAR}
+			  , file_stre_path = #{save_path, jdbcType=VARCHAR}
+			  , file_extsn = #{extension, jdbcType=VARCHAR}
+			  , file_size = #{file_size, jdbcType=VARCHAR}
+		 WHERE  file_no = #{post_no, jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectFile" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT  file_no
+		      , date_format(frst_regist_dt, '%Y-%m-%d %H:%i') as frst_regist_dt
+		      , frst_register
+		      , date_format(last_updt_dt, '%Y-%m-%d %H:%i') as last_updt_dt
+		      , last_updusr
+		      , delete_at
+		      , date_format(delete_dt, '%Y-%m-%d %H:%i') as delete_dt
+		      , deleter
+		  FROM 	tb_file
+		 WHERE  delete_at = 'N'
+		   AND  file_no = #{file_no, jdbcType=VARCHAR}
+	</select>
+
+</mapper>

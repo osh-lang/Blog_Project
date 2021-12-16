@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.project.Blog.mapper.JoinMapper">
+
+	<!-- 회원가입 -->
+	<insert id="userJoin" parameterType="java.util.HashMap">
+	<![CDATA[
+		INSERT
+		  INTO  tb_user
+			(
+				user_id
+			  , user_pw
+			  , user_mail
+			  , user_nm
+			  , tel
+			  , frst_regist_dt
+			)
+		VALUES
+			(
+				#{user_id, jdbcType=VARCHAR}
+			  , #{user_pw, jdbcType=VARCHAR}
+			  , #{user_mail, jdbcType=VARCHAR}
+			  , #{user_nm, jdbcType=VARCHAR}
+			  , #{user_tel, jdbcType=VARCHAR}
+			  , NOW()
+			)
+	]]>
+	</insert>
+
+	<!-- 아이디 중복 체크 -->
+	<select id="idChk" resultType="int">
+	<![CDATA[
+		SELECT  COUNT(*)
+		  FROM  tb_user
+		 WHERE  user_id = #{user_id, jdbcType=VARCHAR}
+	]]>
+	</select>
+
+</mapper>

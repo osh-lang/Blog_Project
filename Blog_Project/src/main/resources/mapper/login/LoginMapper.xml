@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.project.Blog.mapper.LoginMapper">
+
+	<select id="userLogin" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<![CDATA[
+		SELECT 	user_id
+				, admin_at
+				, user_nm
+				, user_mail
+		  FROM 	tb_user
+		 WHERE 	user_id = #{login_id, jdbcType=VARCHAR}
+		   AND 	user_pw = #{login_password, jdbcType=VARCHAR}
+		   AND 	use_yn = 'Y'
+	]]>
+	</select>
+
+	<select id="userLoginCheck" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<![CDATA[
+		SELECT  CASE COUNT(*) > 0
+					WHEN use_yn = 'Y' THEN 'Y'
+					ELSE 'N'
+				END login_at
+		  FROM 	tb_user
+		 WHERE 	user_id = #{login_id, jdbcType=VARCHAR}
+		   AND 	user_pw = #{login_password, jdbcType=VARCHAR}
+	]]>
+	</select>
+
+	<!-- <update id="updateLastLoginDate" parameterType="java.util.HashMap">
+	<![CDATA[
+		UPDATE 	tb_user
+		SET 	last_login_dat
+		e = now()
+		WHERE   user_id = #{user_id, jdbcType=VARCHAR}
+	]]>
+	</update>
+
+	<insert id="insertLoginHist" parameterType="java.util.HashMap">
+	<![CDATA[
+		INSERT INTO t_user_login_history
+			(
+				user_id
+			  ,	login_hist_seq
+			  ,	login_os
+			  ,	login_ip
+			  ,	login_date
+			)
+			VALUES
+			(
+				#{user_id, jdbcType=VARCHAR},
+				(SELECT COALESCE(MAX(a.login_hist_seq), 0) + 1 FROM t_user_login_history a WHERE a.user_id = #{user_id, jdbcType=VARCHAR}),
+				#{login_os, jdbcType=VARCHAR},
+				#{login_ip, jdbcType=VARCHAR},
+				now()
+			)
+	]]>
+	</insert> -->
+
+</mapper>
