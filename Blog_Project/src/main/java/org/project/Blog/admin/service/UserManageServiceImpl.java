@@ -21,13 +21,13 @@ public class UserManageServiceImpl implements UserManageService {
 	private static final Logger logger = LoggerFactory.getLogger(UserManageServiceImpl.class);
 
 	@Autowired
-	UserManageMapper userMangeMapper;
+	UserManageMapper userManageMapper;
 
-	// 유저 조회
+	// �쑀�� 議고쉶
 	@Override
 	public CommonResponse selectUser(Map<String, Object> requestMap) throws Exception {
 
-		// 필수값 체크
+		// �븘�닔媛� 泥댄겕
 		if (CommonFunction.checkRequiredValue(requestMap, "search_count", "search_page")) {
 			return CommonResponseUtil.getErrorResponse(ResponseCode.PARAMETER_REQUIRED);
 		}
@@ -38,10 +38,10 @@ public class UserManageServiceImpl implements UserManageService {
 		requestMap.put("limit_start", (search_page - 1) * search_count);
 		requestMap.put("limit_end", search_count);
 
-		List<Map<String, Object>> userList = userMangeMapper.selectUser(requestMap);
+		List<Map<String, Object>> userList = userManageMapper.selectUser(requestMap);
 
 		if (userList.size() > 0) {
-			int total_count = userMangeMapper.selectUserCount(requestMap);
+			int total_count = userManageMapper.selectUserCount(requestMap);
 
 			return CommonResponseUtil.getListResponseWithPage(CommonFunction.nullToBlankInList(userList), total_count,
 					userList.size(), search_page);
@@ -50,30 +50,30 @@ public class UserManageServiceImpl implements UserManageService {
 		}
 	}
 
-	// 유저 수정
+	// �쑀�� �닔�젙
 	@Override
 	public CommonResponse updateUser(Map<String, Object> requestMap) throws Exception {
 
-		// 필수값 체크
+		// �븘�닔媛� 泥댄겕
 		if (CommonFunction.checkRequiredValue(requestMap, "user_id")) {
 			return CommonResponseUtil.getErrorResponse(ResponseCode.PARAMETER_REQUIRED);
 		}
 
-		userMangeMapper.updateUser(requestMap);
+		userManageMapper.updateUser(requestMap);
 
 		return CommonResponseUtil.getSuccessResponse();
 	}
 
 	@Override
 	public Map<String, Object> viewUser(String user_id) throws Exception {
-		return userMangeMapper.viewUser(user_id);
+		return userManageMapper.viewUser(user_id);
 	}
 
-	// 유저 삭제
+	// �쑀�� �궘�젣
 	@SuppressWarnings("unchecked")
 	@Override
 	public CommonResponse deleteUser(Map<String, Object> requestMap) throws Exception {
-		// 필수값 체크
+		// �븘�닔媛� 泥댄겕
 		if (CommonFunction.checkRequiredValue(requestMap, "user_id")) {
 			return CommonResponseUtil.getErrorResponse(ResponseCode.PARAMETER_REQUIRED);
 		}
@@ -81,7 +81,7 @@ public class UserManageServiceImpl implements UserManageService {
 		ArrayList<String> str = (ArrayList<String>) requestMap.get("user_id");
 		for (int i = 0; i < str.size(); i++) {
 			String temp = str.get(i);
-			userMangeMapper.deleteUser(temp);
+			userManageMapper.deleteUser(temp);
 		}
 
 		return CommonResponseUtil.getSuccessResponse();

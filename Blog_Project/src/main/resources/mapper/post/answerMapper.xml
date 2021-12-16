@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.project.Blog.mapper.AnswerMapper">
 	<sql id="listDateDesc">
-		ORDER BY list.answer_dt desc
+		ORDER BY  list.answer_dt DESC
 	</sql>
 
 	<select id="getAnswerList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
@@ -28,96 +28,96 @@
 		    with recursive cte as
 		        (
 		        SELECT
-		              1 as level
-		            , cmt.answer_no
-		            , cmt.upper_answer_no
-		            , concat('',cmt.answer_no) as sort
-		            , cmt.post_no
-		            , cmt.answer
-		            , cmt.answer_register
-		            , cmt.answer_dt
-		        FROM tb_post_answer cmt
-		        WHERE 1=1
-		        AND cmt.upper_answer_no is null
-		        UNION ALL
+		                1 as level
+		              , cmt.answer_no
+		              , cmt.upper_answer_no
+		              , concat('',cmt.answer_no) as sort
+		              , cmt.post_no
+		              , cmt.answer
+		              , cmt.answer_register
+		              , cmt.answer_dt
+		          FROM  tb_post_answer cmt
+		         WHERE  1=1
+		           AND  cmt.upper_answer_no is null
+		         UNION  ALL
 		        SELECT
-		              cte.level+1 as level
-		            , cmt.answer_no
-		            , cmt.upper_answer_no
-		            , concat('',cte.sort,cmt.answer_no) as sort
-		            , cmt.post_no
-		            , cmt.answer
-		            , cmt.answer_register
-		            , cmt.answer_dt
-		        FROM tb_post_answer cmt, cte
-		        WHERE 1=1
-		        AND cte.answer_no = cmt.upper_answer_no
+		                cte.level+1 as level
+		              , cmt.answer_no
+		              , cmt.upper_answer_no
+		              , concat('',cte.sort,cmt.answer_no) as sort
+		              , cmt.post_no
+		              , cmt.answer
+		              , cmt.answer_register
+		              , cmt.answer_dt
+		          FROM  tb_post_answer cmt, cte
+		         WHERE  1=1
+		           AND  cte.answer_no = cmt.upper_answer_no
 			    )
-			    SELECT *
-			      FROM cte
-			     WHERE cte.post_no=#{post_no, jdbcType=VARCHAR}
-			     ORDER BY cte.sort, cte.answer_no
+			    SELECT  *
+			      FROM  cte
+			     WHERE  cte.post_no=#{post_no, jdbcType=VARCHAR}
+			     ORDER BY  cte.sort, cte.answer_no
 		      ) list
-			ORDER BY sort
+			ORDER BY  sort
 	</select>
 
 	<select id="getAnswerTotalCount" parameterType="java.util.HashMap" resultType="int">
-		SELECT COUNT(*)
-  		  FROM tb_post tp left join tb_post_answer tpa ON tp.post_no = tpa.post_no
-		 WHERE tpa.delete_at = 'N'
- 		   AND tp.post_no = #{post_no, jdbcType=VARCHAR}
+		SELECT  COUNT(*)
+  		  FROM  tb_post tp left join tb_post_answer tpa ON tp.post_no = tpa.post_no
+		 WHERE  tpa.delete_at = 'N'
+ 		   AND  tp.post_no = #{post_no, jdbcType=VARCHAR}
 	</select>
 
 	<insert id="insertAnswer" parameterType="java.util.HashMap">
 		INSERT
-		  INTO tb_post_answer
+		  INTO  tb_post_answer
 			(
-				  post_no
-				, upper_answer_no
-				, answer_register
-				, answer
-				, answer_dt
-				, delete_at
+				post_no
+			  , upper_answer_no
+			  , answer_register
+			  , answer
+			  , answer_dt
+			  , delete_at
 			)
 		VALUES
 			(
-				  #{post_no, jdbcType=VARCHAR}
-				, #{upper_answer_no, jdbcType=VARCHAR}
-				, #{answer_register, jdbcType=VARCHAR}
-				, #{answer, jdbcType=VARCHAR}
-				, now()
-				, 'N'
+				#{post_no, jdbcType=VARCHAR}
+			  , #{upper_answer_no, jdbcType=VARCHAR}
+			  , #{answer_register, jdbcType=VARCHAR}
+			  , #{answer, jdbcType=VARCHAR}
+			  , now()
+			  , 'N'
 			)
-
 	</insert>
+
 	<insert id="insertLike" parameterType="java.util.HashMap">
 		INSERT
-		  INTO tb_post_answer_like
+		  INTO  tb_post_answer_like
 			(
-				  answer_no
-				, user_id
-				, like_at
+				answer_no
+			  , user_id
+			  , like_at
 			)
 		VALUES
 			(
-				  #{answer_no, jdbcType=VARCHAR}
-				, #{user_id, jdbcType=VARCHAR}
-				, 'Y'
+				#{answer_no, jdbcType=VARCHAR}
+			  , #{user_id, jdbcType=VARCHAR}
+			  , 'Y'
 			)
 	</insert>
 
 	<delete id="deleteLike" parameterType="java.util.HashMap">
 		DELETE
-		  FROM tb_post_answer_like
-		 WHERE answer_no = #{answer_no, jdbcType=VARCHAR}
-		   AND user_id = #{user_id, jdbcType=VARCHAR}
-		   AND like_at = 'Y'
+		  FROM  tb_post_answer_like
+		 WHERE  answer_no = #{answer_no, jdbcType=VARCHAR}
+		   AND  user_id = #{user_id, jdbcType=VARCHAR}
+		   AND  like_at = 'Y'
 	</delete>
 
 	<update id="updateLike" parameterType="java.util.HashMap">
-		UPDATE tb_post_answer_like
-		   SET like_at = #{like_at, jdbcType=VARCHAR}
-		 WHERE answer_no = #{answer_no, jdbcType=VARCHAR}
-		   AND user_id = #{user_id, jdbcType=VARCHAR}
+		UPDATE  tb_post_answer_like
+		   SET  ike_at = #{like_at, jdbcType=VARCHAR}
+		 WHERE  answer_no = #{answer_no, jdbcType=VARCHAR}
+		   AND  user_id = #{user_id, jdbcType=VARCHAR}
 	</update>
 </mapper>

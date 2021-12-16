@@ -17,101 +17,100 @@
 			  , read_cnt
 			  , date_format(frst_regist_dt, '%Y-%m-%d %H:%i') as frst_regist_dt
 			  , frst_register
-
-		  FROM tb_post
-		 WHERE delete_at = 'N'
+		  FROM  tb_post
+		 WHERE  delete_at = 'N'
 		 <if test="tag_no > 0">
 		 	<include refid="addTag"></include>
 		 </if>
-		 ORDER BY  frst_regist_dt DESC
-			     , post_no DESC
-		 LIMIT   #{limit_start, jdbcType=VARCHAR}
-		       , #{limit_end, jdbcType=VARCHAR}
+		 ORDER  BY  frst_regist_dt DESC
+			      , post_no DESC
+		 LIMIT  #{limit_start, jdbcType=VARCHAR}
+		      , #{limit_end, jdbcType=VARCHAR}
 	</select>
 
 	<select id="getPostTotalCount" parameterType="java.util.HashMap" resultType="int">
-		SELECT COUNT(*)
-		  FROM tb_post
-		 WHERE delete_at = 'N'
+		SELECT  COUNT(*)
+		  FROM  tb_post
+		 WHERE  delete_at = 'N'
 		 <if test="tag_no > 0">
 		 	<include refid="addTag"></include>
 		 </if>
 	</select>
 
 	<select id="selectPost" parameterType="int" resultType="java.util.HashMap">
-		SELECT post_no
+		SELECT  post_no
 			  , tag_no
 			  , post_sj
 			  , post_cn
 			  , read_cnt
 			  , date_format(frst_regist_dt, '%Y-%m-%d %H:%i%p') as frst_regist_dt
 			  , frst_register
-		FROM tb_post
-		WHERE delete_at = 'N'
-		AND post_no = #{index, jdbcType=VARCHAR}
+		  FROM  tb_post
+		 WHERE  delete_at = 'N'
+		   AND  post_no = #{index, jdbcType=VARCHAR}
 	</select>
 
 	<insert id="insertFile" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="file_no">
 		INSERT
-  		  INTO tb_file
+  		  INTO  tb_file
 			(
-				  frst_regist_dt
-				, frst_register
-				, delete_at
+				frst_regist_dt
+			  , frst_register
+			  , delete_at
 			)
 		VALUES
 			(
-				  now()
-				, #{frst_register, jdbcType=VARCHAR}
-				, 'N'
+				now()
+			  , #{frst_register, jdbcType=VARCHAR}
+			  , 'N'
 			)
 	</insert>
 
 	<insert id="insertFileDetail" parameterType="java.util.HashMap">
 		INSERT
-  		  INTO tb_file_detail
+  		  INTO  tb_file_detail
 			(
-				  file_no
-				, file_detail_sn
-				, file_stre_nm
-				, file_orginl_nm
-				, file_stre_path
-				, file_extsn
-				, file_size
+				file_no
+			  , file_detail_sn
+			  , file_stre_nm
+			  , file_orginl_nm
+			  , file_stre_path
+			  , file_extsn
+			  , file_size
 			)
 		VALUES
 			(
-				  #{file_no, jdbcType=VARCHAR}
-				, #{file_detail_sn, jdbcType=VARCHAR}
-				, #{save_name, jdbcType=VARCHAR}
-				, #{original_name, jdbcType=VARCHAR}
-				, #{save_path, jdbcType=VARCHAR}
-				, #{extension, jdbcType=VARCHAR}
-				, #{file_size, jdbcType=VARCHAR}
+				#{file_no, jdbcType=VARCHAR}
+			  , #{file_detail_sn, jdbcType=VARCHAR}
+			  , #{save_name, jdbcType=VARCHAR}
+			  , #{original_name, jdbcType=VARCHAR}
+			  , #{save_path, jdbcType=VARCHAR}
+			  , #{extension, jdbcType=VARCHAR}
+			  , #{file_size, jdbcType=VARCHAR}
 			)
 	</insert>
 
 	<insert id="insertPost" parameterType="java.util.HashMap">
-	INSERT
-  		INTO tb_post
+		INSERT
+  		  INTO  tb_post
 			(
-				  tag_no
-				, post_sj
-				, post_cn
-				, file_no
-				, frst_regist_dt
-				, frst_register
-				, delete_at
+				tag_no
+			  , post_sj
+			  , post_cn
+			  , file_no
+			  , frst_regist_dt
+			  , frst_register
+			  , delete_at
 			)
 		VALUES
 			(
-				  #{tag_value, jdbcType=VARCHAR}
-				, #{post_sj, jdbcType=VARCHAR}
-				, #{post_cn, jdbcType=VARCHAR}
-				, #{file_no, jdbcType=VARCHAR}
-				, now()
-				, #{frst_register, jdbcType=VARCHAR}
-				, 'N'
+				#{tag_value, jdbcType=VARCHAR}
+			  , #{post_sj, jdbcType=VARCHAR}
+			  , #{post_cn, jdbcType=VARCHAR}
+			  , #{file_no, jdbcType=VARCHAR}
+			  , now()
+			  , #{frst_register, jdbcType=VARCHAR}
+			  , 'N'
 			)
 	</insert>
 

@@ -4,7 +4,6 @@
 
 	<!-- 회원가입 -->
 	<insert id="userJoin" parameterType="java.util.HashMap">
-	<![CDATA[
 		INSERT
 		  INTO  tb_user
 			(
@@ -24,16 +23,13 @@
 			  , #{user_tel, jdbcType=VARCHAR}
 			  , NOW()
 			)
-	]]>
 	</insert>
 
 	<!-- 아이디 중복 체크 -->
 	<select id="idChk" resultType="int">
-	<![CDATA[
 		SELECT  COUNT(*)
 		  FROM  tb_user
 		 WHERE  user_id = #{user_id, jdbcType=VARCHAR}
-	]]>
 	</select>
 
 </mapper>
